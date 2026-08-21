@@ -4,7 +4,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     kotlin("jvm") version "2.0.20"
     kotlin("plugin.serialization") version "2.0.20"
-    id("org.jetbrains.compose") version "1.6.11"
+
+    id("org.jetbrains.compose") version "1.7.3"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
 }
 
 group = "com.enroute"
@@ -36,6 +38,7 @@ dependencies {
 
 kotlin {
     jvmToolchain(17)
+
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
     }
@@ -46,9 +49,16 @@ compose.desktop {
         mainClass = "com.enroute.usermanager.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(
+                TargetFormat.Msi,
+                TargetFormat.Deb,
+                TargetFormat.Dmg
+            )
+
             packageName = "EnrouteUserManager"
-            packageVersion = "0.1.0"
+
+            // DMG requires MAJOR or MAJOR.MINOR
+            packageVersion = "1.0.0"
         }
     }
 }
